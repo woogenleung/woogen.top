@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block main %}
+
+<main class="col-md-12">
+    <h1 class="page-title">关于本人</h1>
+    <article class="post">
+        <div class="entry-content clearfix">
+            <figure class="img-responsive-center">
+                <img class="img-responsive" src="{% static 'img/aboutme.jpeg' %}" alt="这就是小王">
+            </figure>
+            <p>
+                没错小王就是一只狗,如有问题请与小王.大旺两声就可以收到来信.AHHHHHHHHHHHH!
+            </p>
+            <div class="height-40px"></div>
+            <h2 class="title text-center">Social</h2>
+            <ul class="social">
+                <li class="facebook"><a href="#"><span class="ion-social-facebook"></span></a></li>
+                <li class="twitter"><a href="#"><span class="ion-social-twitter"></span></a></li>
+                <li class="google-plus"><a href="#"><span class="ion-social-googleplus"></span></a></li>
+                <li class="tumblr"><a href="#"><span class="ion-social-tumblr"></span></a></li>
+            </ul>
+        </div>
+    </article>
+</main>
+
+{% endblock %}
