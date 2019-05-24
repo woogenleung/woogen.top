@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'xjio=jszj#(1!#z2qqqkjb^q0)+%@ativ*&7oq)ed3-h5jfq6$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.woogen.top']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.woogen.top', '172.23.127.195']
 
 # Application definition
 
@@ -36,7 +36,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'login',
     'comment',
+    'likes',
+    'read_statistics',
+    'captcha',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'mdeditor',
+    'ckeditor',
+    'mptt',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -108,15 +121,91 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-# AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'login.User'
 
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# 验证码参数设置
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+CAPTCHA_IMAGE_SIZE = (100, 30)
+CAPTCHA_LETTER_ROTATION = (-35, 35)
+CAPTCHA_LENGTH = '4'
+CAPTCHA_TIMEOUT = '1'
+
+# 第三方登录github
+GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize'
+GITHUB_CLIENTID = '683e957cedd34565e994'
+GITHUB_CLIENTSECRET = 'def0f054e13b424bab1e4755d9a8e5dfcd861534'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SITE_ID = 1
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '675839127@qq.com'
+EMAIL_HOST_PASSWORD = 'vprdwcilokgmbcjf'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# 自定义参数,设置每页博客数量
+Each_page_blogs = 5
+
+# 缓存设置(数据库缓存)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',
+    }
+}
+
+
+# 配置ckeditor
+CKEDITOR_UPLOAD_PATH = '/media/uploads'
+
+CKEDITOR_CONFIGS = {
+    'comment_ckeditor': {
+        'toolbar': 'custom',
+        'toolbar_custom': [
+            ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'],
+            ["TextColor", "BGColor", 'RemoveFormat'],
+            ['NumberedList', 'BulletedList'],
+            ['Link', 'Unlink'],
+            ["Smiley", "SpecialChar", 'Blockquote'],
+        ],
+        'width': 'auto',
+        'height': '180',
+        'tabSpaces': 4,
+        'removePlugins': 'elementspath',
+        'resize_enabled': False,
+    }
+}
+
+
+# 配置发qq邮件
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '675839127@qq.com'
+EMAIL_HOST_PASSWORD = 'bxezqpwoihpfbfcj'    # 授权码
+EMAIL_USE_TLS = True                        # 这里必须是 True，否则发送不成功
+EMAIL_FROM = '675839127@qq.com'             # 你的 QQ 账号
+
+# 邮件确认期限
+CONFIRM_DAYS = 7

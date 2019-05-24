@@ -1,45 +1,259 @@
 {% extends 'base.html' %}
-{% block main %}
-{% for post in post_list %}
-<article class="post post-{{ post.pk }}">
-    <h1 class="entry-title">
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-    </h1>
-    <div class="entry-meta">
-        <span class="post-category"><a href="#">{{ post.category.name }}</a></span>
-        <span class="post-date"><a href="#"><time class="entry-date" datetime="{{ post.create_time }}">{{ post.create_time }}</time> </a></span>
-        <span class="post-author"><a href="#">{{ post.author }}</a></span>
-        <span class="comments-link"><a href="#">评论 {{ post.comment_set.count }}</a> </span>
-        <span class="views-count"><a href="#">阅读 {{ post.views }}</a></span>
-    </div>
+{% load staticfiles %}
+{% load blog_tags %}
+{% load comment_tags %}
+{% load liked_tags %}
+{% block css %}
 
-    <div class="entry-content clearfix">
-        <p>{{ post.excerpt }}</p>
-        <div class="read-more cl-effect-14"><a href="{{ post.get_absolute_url }}" class="more-link">继续阅读<span
-                class="meta-nav">→</span></a></div>
+<!--index的css-->
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .choice {
+        font-size: 15px;
+        margin-top: 5px;
+    }
+
+    .entry-title-category {
+        margin-right: 5px;
+        position: relative;
+        top: 0px;
+        padding: 2px 6px 4px;
+        background-color: #d9534f;
+        font-size: 14px;
+    }
+
+    .label-arrow {
+        top: 7px;
+        right: -4px;
+        border-left: 4px solid #d9534f;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        position: absolute;
+
+    }
+
+
+    @media (min-width: 1350px) {
+        .container {
+            width: 1350px;
+        }
+    }
+
+</style>
+{% block nav_home_active %}active{% endblock %}
+{% endblock %}
+{% block main %}
+<div class="col-md-12">
+    <div class="banner-box">
+        <ul class="img">
+            <li><img src="{% static 'img/ban1.jpg' %}" alt="" width="840px"></li>
+            <li><img src="{% static 'img/ban2.jpg' %}" alt="" width="840px"></li>
+            <li><img src="{% static 'img/ban3.jpg' %}" alt="" width="840px"></li>
+            <li><img src="{% static 'img/ban5.jpg' %}" alt="" width="840px"></li>
+        </ul>
+        <ul class="li">
+        </ul>
+        <div class="but but-left">&lt;</div>
+        <div class="but but-right">&gt;</div>
+        <div class="bar"></div>
     </div>
-</article>
-{% empty %}
-<div class="no-post">暂时还没有发布文章</div>
-{% endfor %}
-<!-- 简单分页效果
-<div class="pagination-simple">
-    <a href="#">上一页</a>
-    <span class="current">第 6 页 / 共 11 页</span>
-    <a href="#">下一页</a>
 </div>
--->
-<div class="pagination">
-    <ul>
-        <li><a href="">1</a></li>
-        <li><a href="">...</a></li>
-        <li><a href="">4</a></li>
-        <li><a href="">5</a></li>
-        <li class="current"><a href="">6</a></li>
-        <li><a href="">7</a></li>
-        <li><a href="">8</a></li>
-        <li><a href="">...</a></li>
-        <li><a href="">11</a></li>
-    </ul>
+
+
+<div class="col-md-12">
+    {% for post in post_list %}
+    <article class="post post-{{ post.pk }} article-body col-md-12">
+        <header class="col-md-12">
+            <a class="entry-title-category label" href="#">
+                {{ post.category }}
+                <i class="label-arrow"></i>
+            </a>
+            <h2 class="entry-title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </h2>
+        </header>
+        <div class="col-md-4 col-sm-4 col-xs-4 entry-img ">
+            <a href="{{ post.get_absolute_url }}">
+                <img src="/media/{{ post.img }}" alt="{{ post.img }}" width="200" height="120">
+            </a>
+        </div>
+                <span class="note">{{ post.excerpt }}</span>
+        <div class="entry-meta ">
+            <span class="post-category post-border">
+                <a href="{% url 'blog:category' post.category.name %}"> {{ post.category.name }} </a>
+            </span>
+
+            <span class="post-date post-border">
+                <time class="entry-date" datetime="{{ post.create_time }}">{{ post.create_time }}</time>
+            </span>
+
+            <span class="post-author post-border">{{ post.author }}</span>
+
+            <span class="comments-link post-border"><span class="
+glyphicon glyphicon-comment"></span> {% get_comment_count post %}</span>
+            <span class="views-count">
+
+                <span class="glyphicon glyphicon-eye-open"></span>
+                    {{ post.get_read_num }}
+
+            </span>
+
+            <span class="fav-count">
+
+                <span class="glyphicon glyphicon-heart"></span>
+                {% get_like_count post %}
+
+            </span>
+        </div>
+
+
+    </article>
+    {% empty %}
+    <div class="no-post"><h1>暂时还没有发布相关文章</h1></div>
+    {% endfor %}
 </div>
+
+{% if post_list %}
+<div class="col-md-12 text-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if post_list.has_previous %}
+            <li>
+                <a href="?page={{ post_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            {% else %}
+            <li class="disabled">
+                <a><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            {% endif %}
+            {% for page_num in page_range %}
+            {% if page_num == post_list.number %}
+            <li class="active"><span>{{ page_num }}</span></li>
+            {% else %}
+                {% if page_num == '...' %}
+                    <li><span>{{ page_num }}</span></li>
+                {% else %}
+                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+
+            {% if post_list.has_next %}
+            <li>
+                <a href="?page={{ post_list.next_page_number }}" aria-label="Next"><span
+                        aria-hidden="true">&raquo;</span></a>
+            </li>
+            {% else %}
+            <li class="disabled">
+                <a><span aria-hidden="true">&raquo;</span></a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+{% block js %}
+<!--轮播图js-->
+<script type="text/javascript">
+    var oSj = 5000;
+    var i = 0;
+    var bar = $(".banner-box .bar");
+    var oImg = $(".banner-box .img");//获取图片盒子
+    var oImgfirst = $('.banner-box .img li:first').clone();//复制第一张图片
+    oImg.append(oImgfirst);//将复制的第一张图片放到最后
+    var imgNum = $(".banner-box .img li").length;//获取图片数量
+
+    //根据图片个数添加圆点按钮
+    for (var j = 1; j <= imgNum - 1; j++) {
+        $('.banner-box .li').append('<li></li>');
+    }
+
+    //给第一个按钮添加选中样式
+    $('.banner-box .li li:first').addClass('index');
+
+
+    //点击向右轮播
+    $(".but-right").click(function () {
+        int();
+    });
+
+    //点击向左轮播
+    $(".but-left").click(function () {
+        bar.stop().css('width', 0);
+        i--;
+        if (i == -1) {
+            $('.banner-box .img').css('left', -(imgNum - 1) * 840);//用CSS进行图片位置变换，达到无缝拼接效果
+            i = imgNum - 2;
+        }
+        oImg.stop().animate({left: -i * 840}, 500);//动画效果
+        clearInterval(oTime);
+        oTime = setInterval(function () {
+            int();
+        }, oSj);
+        barAniMate();//进度条函数动画效果
+        $(".banner-box .li li").eq(i).addClass('index').siblings().removeClass('index');//给相应的按钮添加样式
+    });
+
+    //鼠标移动到圆点后轮播
+    $(".banner-box .li li").hover(function () {
+        clearInterval(oTime);//清除定时器
+        bar.stop().css('width', 0);
+        var index = $(this).index();
+        i = index;
+        oImg.stop().animate({left: -index * 840}, 500);//动画效果
+        bar.stop().css('width', 0);
+        $(this).addClass('index').siblings().removeClass('index');//给相应的按钮添加样式
+    }, function () {
+        barAniMate();//进度条函数动画效果
+        oTime = setInterval(function () {
+            int();
+        }, oSj);
+    });
+
+    //自动轮播
+    var oTime = setInterval(function () {
+        int();
+    }, oSj);
+
+    barAniMate();//进度条函数动画效果
+
+    //进度条函数动画效果
+    function barAniMate() {
+        bar.animate({width: '100%'}, oSj, function () {
+            $(this).css('width', 0);
+        });
+    }
+
+    //自动轮播函数
+    function int() {
+        bar.stop().css('width', 0);
+        i++;
+        if (i == imgNum) {
+            oImg.css('left', 0);//用CSS进行图片位置变换，达到无缝拼接效果
+            i = 1;
+        }
+        oImg.stop().animate({left: -i * 840}, 500);//动画效果
+        barAniMate();//进度条函数动画效果
+        clearInterval(oTime);
+        oTime = setInterval(function () {
+            int();
+        }, oSj);
+        if (i == imgNum - 1) {
+            $(".banner-box .li li").eq(0).addClass('index').siblings().removeClass('index');//给相应的按钮添加样式
+
+        } else {
+            $(".banner-box .li li").eq(i).addClass('index').siblings().removeClass('index');//给相应的按钮添加样式
+        }
+    }
+</script>
+
 {% endblock %}

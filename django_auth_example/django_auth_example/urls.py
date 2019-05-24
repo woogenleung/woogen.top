@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from . import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'', include('users.urls')),
-    url(r'', include('comment.urls')),
-]
+                  url(r'^admin', admin.site.urls),
+                  url(r'^user/', include('login.urls')),
+                  url(r'captcha/', include('captcha.urls')),
+                  url(r'^accounts/', include('allauth.urls')),
+                  url(r'mdeditor/', include('mdeditor.urls')),
+                  url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+                  url(r'comment/', include('comment.urls')),
+                  url(r'like/', include('likes.urls')),
+                  url(r'', include('users.urls')),
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

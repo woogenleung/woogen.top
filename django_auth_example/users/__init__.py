@@ -9,4 +9,4 @@ def get_current_app_name(_file):
 
 class UsersConfig(AppConfig):
     name = get_current_app_name(__file__)
-    verbose_name = '用户管理'
+    verbose_name = '文章管理'

@@ -3,95 +3,277 @@
 {% load blog_tags %}
 <html>
 <head>
-    <title>Black &amp; White</title>
+    <title>
+        五更 | Woogen的个人博客
+    </title>
 
     <!-- meta -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- css -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/pace.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+    <link rel="stylesheet" href="{% static 'awesome/css/font-awesome.css' %}">
 
     <!-- js -->
-    <script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
     <script src="{% static 'js/pace.min.js' %}"></script>
     <script src="{% static 'js/modernizr.custom.js' %}"></script>
+    {% block header_extends %}
+    {% endblock %}
+
+    <style>
+
+
+        .post-category a {
+            color: #FF2E63;
+        }
+
+        .top a {
+            display: inline;
+            position: relative;
+        }
+
+        .top-weixin div {
+            left: -999em;
+            position: absolute;
+            overflow: visible;
+            padding-top: 5px;
+            width: 250px;
+            height: 250px;
+            z-index: 999;
+
+        }
+
+        .top-weixin img {
+            margin-left: 0px;
+            width: 245px;
+            height: 225px;
+        }
+
+        .top-weixin:hover div {
+            left: auto;
+        }
+
+
+    </style>
+    {% block css %}
+    {% endblock %}
 </head>
 
 <body>
-<div class="container">
-    <header id="site-header">
-        <div class="row">
-            <div class="col-md-4 col-sm-5 col-xs-8">
-                <div class="logo">
-                    <h1><a href="{% url 'blog:index' %}"><b> Woogen </b> &amp; 个人博客 </a></h1>
-                </div>
-            </div><!-- col-md-4 -->
-            <div class="col-md-8 col-sm-7 col-xs-4">
-                <nav class="main-nav" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" id="trigger-overlay" class="navbar-toggle">
-                            <span class="ion-navicon"></span>
-                        </button>
-                    </div>
-
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="cl-effect-11"><a href="{% url 'blog:index' %}" data-hover="首页">首页</a></li>
-                            <li class="cl-effect-11"><a href="full-width.html" data-hover="博客">博客</a></li>
-                            <li class="cl-effect-11"><a href="{% url 'blog:about' %}" data-hover="关于">关于</a></li>
-                            <li class="cl-effect-11"><a href="contact.html" data-hover="联系">联系</a></li>
-                        </ul>
-                    </div><!-- /.navbar-collapse -->
-                </nav>
-                <div id="header-search-box">
-                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
-                    <div id="search-form" class="search-form">
-                        <form role="search" method="get" id="searchform" action="#">
-                            <input type="search" placeholder="搜索" required>
-                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
-                        </form>
-                    </div>
-                </div>
-            </div><!-- col-md-8 -->
+<!--菜单栏-->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#example-navbar-collapse" aria-expanded="false">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'blog:index' %}">五更的个人博客</a>
         </div>
-    </header>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="navbar-collapse collapse" id="example-navbar-collapse" aria-expanded="true">
+            <ul class="nav navbar-nav">
+                <li class="{% block nav_home_active %}{% endblock %}"><a href="{% url 'blog:index' %}"> 首页 </a></li>
+                <li class="{% block nav_blog_active %}{% endblock %}"><a href="{% url 'blog:bloglist' %}"> 博客 </a></li>
+                <li class="{% block nav_knowledge_active %}{% endblock %}"><a href="{% url 'blog:knowledge' %}"> 知识 </a></li>
+                <li class="{% block nav_messageboard_active %}{% endblock %}"><a href="{% url 'comment:message_board' %}"> 留言 </a></li>
+                <li class="{% block nav_about_active %}{% endblock %}"><a href="{% url 'blog:about' %}"> 关于 </a></li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">欢迎回来: {{ user.get_nickname_or_username }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'user:user_info' %}">用户中心</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'user:logout' %}">退出登录</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li><a href="{% url 'user:login' %}?next={{ request.path }}">登录/注册</a></li>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="header-banner">
+    <div class="container">
+
+        <a href="{% url 'blog:index' %}">
+                        <h1 style="font-size: 40px;font-weight: 600">
+                            <span class="name-mono">五更</span>
+                            |
+                            <span class="name-bloger">Woogen.top</span>
+                        </h1>
+                    </a>
+
+        <p>五更 一天最安静美妙的时间</p>
+        <p>愿你心明眼亮</p>
+        <p>五更的博客</p>
+    </div>
 </div>
-<div class="copyrights">Collect from <a href="http://www.cssmoban.com/">网页模板</a></div>
-<div class="copyrights">Modified by <a href="http://zmrenwu.com/">追梦人物的博客</a></div>
+
+<div class="speedbar container alert alert-success" style="max-width: 1350px">
+    <div class="toptip"><strong class="text-success"><i class="fa fa-volume-up" style="color:#17a2b8"></i> </strong>
+        &nbsp;
+        本站基于Django1.11开发,正在不断的完善,如遇到bug希望能在评论区<a href="{% url 'comment:message_board' %}">留言</a>或<a
+                href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=675839127@qq.com">发送邮件</a>.本站源码<a
+                href="https://github.com/woogenleung/blog">Github</a>.
+    </div>
+</div>
+
 
 <div class="content-body">
-    <div class="container">
+    <div class="container" style="margin-bottom: 10px;text-align: left;">
         <div class="row">
-            <main class="col-md-8">
+            <main class="col-md-8 col-sm-12">
                 {% block main %}
                 {% endblock %}
             </main>
-            <aside class="col-md-4">
+            <aside class="col-md-4 col-sm-12">
+                <div class="widget widget-archives" id="fix_right_social">
+                    <div class="social">
+                        <a href="https://weibo.com/u/1994749327?is_hot=1" data-toggle="tooltip" data-placement="top" title="新浪微博" data-original-title="新浪微博">
+                            <i class="fa fa-weibo sinaweibo" aria-hidden="true"></i>
+                        </a>
+
+                        <a href="#" class="top-weixin">
+                            <i class="fa fa-weixin weixins" aria-hidden="true"></i>
+                            <div><img src="/media/img/wechat_code.jpg"></div>
+                        </a>
+
+                        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=675839127@qq.com"
+                           data-toggle="tooltip" data-placement="top" title="Email">
+                            <i class="fa fa-envelope-o email" aria-hidden="true"></i>
+                        </a>
+
+                        <a href="#" class="top-weixin">
+                            <i class="fa fa-qq qq" aria-hidden="true"></i>
+                            <div><img src="/media/img/qq_code.jpg"></div>
+                        </a>
+                        <a href="https://github.com/woogenleung/blog" data-toggle="tooltip" data-placement="top"
+                           title="Github">
+                            <i class="fa fa-github github" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="widget widget-seven-days-data">
+                    <h3 class="widget-title"><span class="widget-title-logo
+glyphicon glyphicon-list-alt"
+                                                   aria-hidden="true"></span> 阅读量趋势图 </h3>
+                    <!--图标容器DOM-->
+                    <div id="container" style="width: 380px;height:200px;"></div>
+                    <!--引用highcharts.js-->
+                    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+                    <!--图标配置-->
+                    <script>
+                        var options = {
+                            chart: {
+                                type: 'line'                        //指定图表的类型，默认是折线图（line）
+                            },
+                            title: {
+                                text: '前七日阅读量变化图'             // 标题
+                            },
+                            xAxis: {
+                                categories: {{date_nums | safe}},
+                                tickmarkPlacement: 'on',
+                                    },
+                            yAxis: {
+                                title: {text: null},                // y 轴标题,
+                            labels: {enabled: false},
+                            gridLineDashStyle: 'Dash',
+                            },
+                            series: [{                              // 数据列
+                            name: '阅读量',                      // 数据列名
+                            data: {{read_nums}},              // 数据
+                            }],
+                            legend: {
+                                enabled: false
+                            },               //图例
+                            credits: {
+                            text: 'woogen.top',                 // 显示的文字
+                            href:'woogen.top',                 // 链接地址
+                            position:{
+                                align: 'right',
+                                x:0,
+                                verticalAlign:'bottom',
+                                y:-5,
+                            },
+                            style: {
+                                cursor: 'pointer',
+                                color:'#909090',
+                                fontSize:'10px',
+                            }
+                            },
+                            plotOptions: {
+                            line: {
+                                dataLabels: {enabled: true}
+                            }
+                            },
+                        };
+                        // 图表初始化函数
+                        var chart = Highcharts.chart('container', options);
+                    </script>
+                </div>
+                <div class="widget widget-7days-hot-data" id="fix_right_data">
+                    <h3 class="widget-title"><span class="widget-title-logo
+glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
+                    <ul>
+                        {% for hot_data in seven_days_hot_data %}
+                        <li class="tag_7days_hot_data_li">
+                            <a href="{% url 'blog:detail' hot_data.id %}"> {{ hot_data.title }} </a>
+                        </li>
+                        {% empty %}
+                        暂无内容！
+                        {% endfor %}
+                    </ul>
+                </div>
                 <div class="widget widget-archives">
-                    <h3 class="widget-title">归档</h3>
+                    <h3 class="widget-title"><span class="widget-title-logo glyphicon glyphicon-calendar"
+                                                   aria-hidden="true"></span> 归档 </h3>
                     {% archives as date_list %}
                     <ul>
                         {% for date in date_list %}
-                        <li>
-                            <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }} 年 {{ date.month }} 月</a>
+                        <li class="tag_data_li">
+                            <a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }} 年 {{ date.month }}
+                                月</a>
                         </li>
                         {% empty %}
                         暂无归档！
                         {% endfor %}
                     </ul>
                 </div>
-                 <div class="widget widget-category">
-                    <h3 class="widget-title">标签</h3>
+                <div class="widget widget-category">
+                    <h3 class="widget-title"><span class="widget-title-logo glyphicon glyphicon-book"></span> 文章分类 </h3>
                     {% get_categories as category_list %}
                     <ul>
                         {% for category in category_list %}
-                        <li>
-                            <a href="#">{{ category.name }} <span class="post-count">(13)</span></a>
+                        <li class="tag_category_li">
+                            <a href="{% url 'blog:category' category.name %}">{{ category.name }} </a>
+                            <span class="post-count badge">{{ category.num_posts }}</span>
                         </li>
                         {% empty %}
                         暂无分类！
@@ -99,7 +281,8 @@
                     </ul>
                 </div>
                 <div class="widget widget-tag-cloud">
-                    <h3 class="widget-title">分类</h3>
+                    <h3 class="widget-title"><span class="glyphicon glyphicon-tags widget-title-logo"
+                                                   aria-hidden="true"></span> 标签云 </h3>
                     {% get_tags as tag_list %}
                     <ul>
                         {% for tag in tag_list %}
@@ -110,41 +293,82 @@
                         暂无分类！
                         {% endfor %}
                     </ul>
-                </div>
 
+                </div>
+                <div class="widget widget-fri-link" id="widget-fri-link">
+                    <h3 class="widget-title"><span class="glyphicon glyphicon-link widget-title-logo"
+                                                   aria-hidden="true"></span> 友情链接 </h3>
+                    <ul>
+                        <li><a href="https://cuiqingcai.com/">崔庆才的个人博客</a></li>
+                        <li><a href="https://www.zmrenwu.com/">追梦人物</a></li>
+                        <li><a href="https://tendcode.com/">TendCode</a></li>
+                    </ul>
+                </div>
                 <!--{% block toc %}-->
                 <!--{% endblock %}-->
             </aside>
         </div>
     </div>
 </div>
-<footer id="site-footer">
+<div id="footer" class="page-bottom">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p class="copyright">&copy 2019 - 采集自<a href="http://www.cssmoban.com/"
-                                                        target="_blank" title="模板之家">模板之家</a>
-                    - 由<a href="http://zmrenwu.com/" title="网页模板" target="_blank"> Woogen </a>修改
-                </p>
+        <div class="col-sm-4 hidden-xs">
+            <div class="content">
+                <h4 class="footer-title">关于本站</h4>
+                <p>1、基于Django+Bootstrap开发</p>
+                <p>2、想写什么就写什么skrrrr</p>
+                <p>3、开始于2019-03-01开始建设</p>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="content">
+                <h4 class="footer-title">建议反馈</h4>
+                <p>1、可在留言板写下建议</p>
+                <p>2、可添加上方微信/qq与本人联系</p>
+                <p>3、没有3的啦</p>
+            </div>
+        </div>
+        <div class="col-sm-4 hidden-xs">
+            <div class="content">
+                <h4 class="footer-title">友情提示</h4>
+                <p>1、小王(汪汪汪)</p>
+                <p>2、<a href="http://yshblog.com/">杨士航的博客</a></p>
+                <p></p>
             </div>
         </div>
     </div>
-</footer>
-
-<!-- Mobile Menu -->
-<div class="overlay overlay-hugeinc">
-    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
-    <nav>
-        <ul>
-            <li><a href="index.html">首页</a></li>
-            <li><a href="full-width.html">博客</a></li>
-            <li><a href="about.html">关于</a></li>
-            <li><a href="contact.html">联系</a></li>
-        </ul>
-    </nav>
+    <div class="copyright">
+        <span>Welcome to visit my website © Woogen | Powered by Django & Bootstrap</span>
+    </div>
 </div>
 
-<script src="{% static 'js/script.js' %}"></script>
+<button type="button" id="BackTop" class="toTop-arrow" style="z-index: 100;"></button>
 
+
+<script src="{% static 'js/script.js' %}"></script>
+<!--top按钮-->
+<script>
+    // 提示框初始化
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    // 向上滚动的函数
+    $(function () {
+        $('#BackTop').click(function () {
+            $('html,body').animate({scrollTop: 0}, 500);
+        });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('#BackTop').fadeIn(300);
+            } else {
+                $('#BackTop').stop().fadeOut(300);
+            }
+        }).scroll();
+    });
+</script>
+
+{% block js %} {% endblock %}
+{% block script_extends %}{% endblock %}
 </body>
 </html>

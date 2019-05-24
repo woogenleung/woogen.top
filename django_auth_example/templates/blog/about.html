@@ -1,27 +1,103 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% load staticfiles %}
+{% block title %}关于 | Woogen的个人博客{% endblock %}
+{% block nav_about_active %}active{% endblock %}
 {% block main %}
+<div class="container" style="max-width: 1200px">
+        <div class="row text-center">
+            <div class="col" style="background-color: #ffffff; ">
+                <div class="row align-items-center justify-content-center" style="padding-top: 10px">
+                    <div class="col-md-6 col-sm-5 col-md-4 col-lg-3 col-lg-offset-2 col-md-offset-1">
+                        <img src="{% static 'img/aboutme.jpeg' %}"
+                             style="width: 200px;height: 200px; border-radius: 30%">
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-5 ">
+                        <h2>About me</h2>
+                        <div>随缘看看,在读于佛山某辣鸡学院</div>
+                        <div>业余敲代码，主要用Python</div>
+                        <div>爱好唱跳,Rap,打篮球</div>
+                        <div>佛性随缘,只学自己感兴趣的,只做自己喜欢的</div>
+                        <div>Why always me</div>
+                    </div>
+                </div>
 
-<main class="col-md-12">
-    <h1 class="page-title">关于本人</h1>
-    <article class="post">
-        <div class="entry-content clearfix">
-            <figure class="img-responsive-center">
-                <img class="img-responsive" src="{% static 'img/aboutme.jpeg' %}" alt="这就是小王">
-            </figure>
-            <p>
-                没错小王就是一只狗,如有问题请与小王.大旺两声就可以收到来信.AHHHHHHHHHHHH!
-            </p>
-            <div class="height-40px"></div>
-            <h2 class="title text-center">Social</h2>
-            <ul class="social">
-                <li class="facebook"><a href="#"><span class="ion-social-facebook"></span></a></li>
-                <li class="twitter"><a href="#"><span class="ion-social-twitter"></span></a></li>
-                <li class="google-plus"><a href="#"><span class="ion-social-googleplus"></span></a></li>
-                <li class="tumblr"><a href="#"><span class="ion-social-tumblr"></span></a></li>
-            </ul>
+                <hr>
+                <h3>技术栈</h3>
+                <h5>编程</h5>
+                <div class="col-md-10 col-md-offset-1 col-sm-10 col-xs-10 col-xs-offset-1">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr class="table-primary">
+                            <th scope="col">技能</th>
+                            <th scope="col">类别</th>
+                            <th scope="col">技能开启时间</th>
+                            <th scope="col">目前状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="table-success">
+                            <th scope="col">Django</th>
+                            <td>Web</td>
+                            <td>2018.11</td>
+                            <td>博客开发：
+                                <a href="{% url 'blog:index' %}" style="color: #5897fb" target="_blank">
+                                    五更|Woogen的个人博客
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="table-success">
+                            <th scope="col">Python 爬虫开发</th>
+                            <td>程序</td>
+                            <td>2018.06</td>
+                            <td>
+                                基本的图片,文章,博客内容爬取
+                            </td>
+                        </tr>
+                        <tr class="table-success">
+                            <th scope="col">BootStrap 3</th>
+                            <td>前端</td>
+                            <td>2018.08</td>
+                            <td>基础样式的应用</td>
+                        </tr>
+                        <tr class="table-success">
+                            <th scope="col">Flask</th>
+                            <td>web</td>
+                            <td>准备中</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr class="table-success">
+                            <th scope="col">微信小程序</th>
+                            <td>微信开发</td>
+                            <td>准备学习</td>
+                            <td></td>
+                        </tr>
+                        <tr class="table-success">
+                            <th scope="col">未定</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="table-success">
+                            <th scope="col">未定</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <hr>
+                    <p>祝你心明眼亮</p>
+                    <p>有所所获</p>
+                    <br>
+                    <p>遇到问题,请点击这里:<a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=675839127@qq.com">发邮件给博主</a><br>或扫二维码加我的个人微信</p>
+                </div>
+                <div><img src="{% static 'img/wechat_code.jpg' %}" style="max-width: 200px">
+                    <img src="{% static 'img/qq_code.jpg' %}" style="max-width: 200px">
+                </div>
+            </div>
         </div>
-    </article>
-</main>
-
+    </div>
 {% endblock %}
