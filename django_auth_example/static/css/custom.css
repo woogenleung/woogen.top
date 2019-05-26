@@ -398,7 +398,7 @@ img {
 .widget {
     background: #fff;
     padding: 10px 10px 0;
-    border: 1px solid rgba(0, 0, 0, .125);
+    /*border: 1px solid rgba(0, 0, 0, .125);*/
     border-radius: .25rem;
     word-wrap: break-word;
 }
@@ -437,7 +437,6 @@ img {
 }
 
 .widget-archives {
-    margin-top: 10px;
 }
 
 .widget-archives ul {
@@ -1386,6 +1385,7 @@ div.reply {
     background-color: #ffffff;
     padding-top: 10px;
     margin-top: 10px;
+    border-bottom:1px #ddd dashed;
 }
 
 .article-body:hover {
@@ -1523,7 +1523,7 @@ div.reply {
 
 .no-post {
     margin-top: 20px;
-    padding: 100px 0 0 0;
+    padding: 50px;
     width: 100%;
     height: 200px;
     text-align: center;
@@ -1815,7 +1815,7 @@ div.django-ckeditor-widget {
     margin-right: .5rem !important;
 }
 
-/*博客列表页*/
+/*blog_list页*/
 .filter {
     overflow: hidden;
     margin-bottom: 1em;
@@ -1823,12 +1823,69 @@ div.django-ckeditor-widget {
 }
 
 .blog-border {
-    border: 1px #ccc solid;
+    border: 1px solid rgba(0, 0, 0, .125);
     border-radius: 6px;
 }
 
 ul {
     list-style-type: none;
+}
+
+.filter-item {
+    border-bottom: 1px #ddd dashed;
+    padding-bottom: 0.5em;
+}
+
+.tag-list label {
+    color: #777;
+    font-weight: 100;
+    cursor: pointer;
+}
+
+.tag-list .tag-recommend label {
+    font-weight: 700;
+    color: #c93756;
+}
+
+.tag-list li {
+    float: left;
+    margin-right: 1em;
+}
+
+.tag-recommend, .tag-recommend a {
+    color: #c93756;
+}
+
+.blog-item {
+    clear: both;
+    border-bottom: 1px solid #ddd;
+    padding: 1.5em 1em 0.8em 1.5em;
+    overflow: hidden;
+}
+
+.blog-title {
+    margin-bottom: 0.5em;
+    font-size: 115%;
+    font-weight: bold;
+}
+
+.blog_descipt {
+    color: #777;
+    font-size: small;
+}
+
+.blog-tags {
+    font-size: 13px;
+    color: #75878a;
+    margin-top: 0.5em;
+    display: inline-block;
+    border-top: 1px #ddd solid;
+}
+
+.blog-tags li {
+    float: left;
+    padding-top: 0.5em;
+    margin-right: 1em;
 }
 
 /*user_info页*/

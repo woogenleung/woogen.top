@@ -154,7 +154,8 @@
                 {% endblock %}
             </main>
             <aside class="col-md-4 col-sm-12">
-                <div class="widget widget-archives" id="fix_right_social">
+                <div class="card mb-4">
+                    <div class="widget widget-archives" id="fix_right_social">
                     <div class="social">
                         <a href="https://weibo.com/u/1994749327?is_hot=1" data-toggle="tooltip" data-placement="top" title="新浪微博" data-original-title="新浪微博">
                             <i class="fa fa-weibo sinaweibo" aria-hidden="true"></i>
@@ -180,12 +181,14 @@
                         </a>
                     </div>
                 </div>
-                <div class="widget widget-seven-days-data">
+                </div>
+                <div class="card mb-4">
+                    <div class="widget widget-seven-days-data">
                     <h3 class="widget-title"><span class="widget-title-logo
 glyphicon glyphicon-list-alt"
                                                    aria-hidden="true"></span> 阅读量趋势图 </h3>
                     <!--图标容器DOM-->
-                    <div id="container" style="width: 380px;height:200px;"></div>
+                    <div id="container" style="width: 100%;height:200px;"></div>
                     <!--引用highcharts.js-->
                     <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
                     <!--图标配置-->
@@ -238,7 +241,9 @@ glyphicon glyphicon-list-alt"
                         var chart = Highcharts.chart('container', options);
                     </script>
                 </div>
-                <div class="widget widget-7days-hot-data" id="fix_right_data">
+                </div>
+                <div class="card mb-4">
+                    <div class="widget widget-7days-hot-data" id="fix_right_data">
                     <h3 class="widget-title"><span class="widget-title-logo
 glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
                     <ul>
@@ -251,7 +256,9 @@ glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="widget widget-archives">
+                </div>
+                <div class="card mb-4">
+                    <div class="widget widget-archives">
                     <h3 class="widget-title"><span class="widget-title-logo glyphicon glyphicon-calendar"
                                                    aria-hidden="true"></span> 归档 </h3>
                     {% archives as date_list %}
@@ -266,7 +273,9 @@ glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="widget widget-category">
+                </div>
+                <div class="card mb-4">
+                    <div class="widget widget-category">
                     <h3 class="widget-title"><span class="widget-title-logo glyphicon glyphicon-book"></span> 文章分类 </h3>
                     {% get_categories as category_list %}
                     <ul>
@@ -280,7 +289,9 @@ glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="widget widget-tag-cloud">
+                </div>
+                <div class="card mb-4">
+                    <div class="widget widget-tag-cloud">
                     <h3 class="widget-title"><span class="glyphicon glyphicon-tags widget-title-logo"
                                                    aria-hidden="true"></span> 标签云 </h3>
                     {% get_tags as tag_list %}
@@ -295,7 +306,9 @@ glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
                     </ul>
 
                 </div>
-                <div class="widget widget-fri-link" id="widget-fri-link">
+                </div>
+                <div class="card mb-4">
+                    <div class="widget widget-fri-link" id="widget-fri-link">
                     <h3 class="widget-title"><span class="glyphicon glyphicon-link widget-title-logo"
                                                    aria-hidden="true"></span> 友情链接 </h3>
                     <ul>
@@ -303,6 +316,7 @@ glyphicon glyphicon-fire" aria-hidden="true"></span> 7天热门博客 </h3>
                         <li><a href="https://www.zmrenwu.com/">追梦人物</a></li>
                         <li><a href="https://tendcode.com/">TendCode</a></li>
                     </ul>
+                </div>
                 </div>
                 <!--{% block toc %}-->
                 <!--{% endblock %}-->

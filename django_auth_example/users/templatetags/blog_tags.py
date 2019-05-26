@@ -6,6 +6,7 @@ from django.db.models.aggregates import Count
 
 register = template.Library()
 
+
 # 获取最新的文章
 @register.simple_tag
 def get_recent_posts(num=5):
@@ -23,16 +24,25 @@ def archives():
 def get_categories():
     return Category.objects.annotate(num_posts=Count('post')).filter(num_posts__gt=0)
 
+# 获取所有文章总数
+@register.simple_tag
+def get_post_count():
+    return Post.objects.all().count()
 
 # 获取所有标签
 @register.simple_tag
 def get_tags():
     return Tag.objects.all()
 
+
 # 获取最新的公告
 @register.simple_tag
 def get_announcement():
-    return announcement.objects.order_by('-create_time')[0]
+    if announcement.objects.order_by('-create_time'):
+        for field in announcement.objects.order_by('-create_time'):
+            return field
+    else:
+        return '暂未发布公告'
 
 
 # 获取分享的编程文章
@@ -40,9 +50,8 @@ def get_announcement():
 def get_ShareProgram():
     return ShareProgram.objects.all()
 
+
 # 获取分享的其他文章
 @register.simple_tag
 def get_ShareOthers():
     return ShareOthers.objects.all()
-
-

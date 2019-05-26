@@ -125,7 +125,7 @@
                             <li>
                                 <img class="reply_avatar" src="{% static 'img/touxiang.png' %}">
                                 <div class="reply_body">
-                                    <p><span class="reply_name">{{ reply.user.user.get_nickname_or_username }}</span></p>
+                                    <p><span class="reply_name">{{ reply.user.get_nickname_or_username }}</span></p>
                                     <div class="reply_content" id="comment_{{ reply.pk }}">{{ reply.text|safe }}
                                     </div>
                                     <p class="comment_bottom">

@@ -52,7 +52,6 @@ class Post(models.Model, ReadNumExpandMethod):
     read_detail = GenericRelation(ReadDetail)
     tag = models.ManyToManyField(Tag, blank=True, verbose_name='标签')
     author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE)
-    fav = models.PositiveIntegerField(default=0, verbose_name='点赞数')
 
     def save(self, *args, **kwargs):
         if not self.excerpt:
@@ -69,6 +68,9 @@ class Post(models.Model, ReadNumExpandMethod):
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    def get_email(self):
+        return self.author.email
 
     class Meta:
         verbose_name = '博客文章'

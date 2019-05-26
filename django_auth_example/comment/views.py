@@ -1,16 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse, HttpResponse
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from users.models import Post
 from .models import Comment, MessageBoard
 from .forms import CommentForm, MessageForm
+from django.conf import settings
 
 
 def update_comment(request):
-    referer = request.META.get('HTTP_REFERER', reverse('blog:index'))
     comment_form = CommentForm(request.POST, user=request.user)
     data = {}
-
     if comment_form.is_valid():
         # 检查如果通过
         comment = Comment()
@@ -27,13 +28,17 @@ def update_comment(request):
             comment.reply_to = parent_id.user
         comment.save()
 
+        # 发送邮件
+        comment.send_mail()
+
+
         # 返回数据
         data['status'] = 'SUCCESS'
-        data['username'] = comment.user.get_nickname_or_username
+        data['username'] = comment.user.get_nickname_or_username()
         data['comment_time'] = comment.comment_time.strftime('%Y-%m-%d %H:%M:%S')
         data['text'] = comment.text
         if not parent_id is None:
-            data['reply_to'] = comment.reply_to.get_nickname_or_username
+            data['reply_to'] = comment.reply_to.get_nickname_or_username()
         else:
             data['reply_to'] = ''
         data['pk'] = comment.pk

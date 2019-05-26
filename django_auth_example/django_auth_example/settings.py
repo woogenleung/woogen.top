@@ -85,10 +85,21 @@ WSGI_APPLICATION = 'django_auth_example.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'woogentop_datebase',
+        'USER': 'root',
+        'PASSWORD': 'a86893332',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
@@ -165,7 +176,7 @@ EMAIL_HOST_PASSWORD = 'vprdwcilokgmbcjf'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # 自定义参数,设置每页博客数量
-Each_page_blogs = 5
+Each_page_blogs = 6
 
 # 缓存设置(数据库缓存)
 CACHES = {

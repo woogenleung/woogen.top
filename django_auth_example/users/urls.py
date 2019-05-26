@@ -9,7 +9,6 @@ from django_auth_example import settings
 
 app_name = 'blog'
 urlpatterns = [
-    url(r'^hot/$', views.hot_sort, name='hot_sort'),
     url(r'^post/(?P<pk>[0-9]+)/$', views.detail, name='detail'),
     url(r'^archives/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/$', views.archives, name='archives'),
     url(r'^tags/(?P<tag_name>.*?)/$', views.tags, name='tags'),
@@ -17,7 +16,6 @@ urlpatterns = [
     url(r'^bloglist/', views.bloglist, name='bloglist'),
     url(r'^knowledge/$', views.knowledge, name='knowledge'),
     url(r'^about/$', views.about, name='about'),
-    url(r'^contact/$', views.contact, name='contact'),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', views.index, name='index'),
 ]
