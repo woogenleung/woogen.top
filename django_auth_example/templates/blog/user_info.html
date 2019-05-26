@@ -1,0 +1,78 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% load blog_tags %}
+{% block title %}用户中心 | Woogen的个人博客{% endblock %}
+{% block header_extends %}
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">我的信息</div>
+                        <div class="panel-body">
+                            <div>
+                                <h4 class="user-name">{{ user.get_nickname_or_username }}</h4>
+                                <span><a href="{% url 'user:ChangeNickname' %}?from={{ request.get_full_path }}">修改昵称</a></span>
+                                <span><a href="{% url 'user:ChangePassword' %}?from={{ request.get_full_path }}">修改密码</a></span>
+                            </div>
+                            <ul class="user-info">
+                                <li><span>注册邮箱: </span>
+                                    {% if user.has_email_confirmed %}
+                                    <span>{{ user.email }}</span><span>(已验证)</span>
+                                    {% else %}<span>(未绑定)</span>&nbsp;<a href="{% url 'user:bind_email' %}?from={{ request.get_full_path }}">绑定邮箱</a>
+                                    {% endif %}
+
+                                <li><span>注册日期: </span><span>{{ user.date_joined|date:"Y-m-d H:i:s" }}</span></li>
+                                <li><span>最近登录: </span><span>{{ user.last_login|date:"Y-m-d H:i:s" }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">我的足迹</div>
+                        <div class="panel-body">
+                            <div>
+                               <h4>信息统计</h4>
+                                <span>最近参与讨论的文章:</span><span></span>
+                            </div>
+                            <ul class="user-info">
+                                <li>你共评论了<b>数字</b>次</li>
+                                <li>你共回复了<b>数字</b>次</li>
+                                <li>有<b>数字</b>次,其他人回复你</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">未读消息</div>
+                        <div class="panel-body">
+                            <div class="unread_head">
+                                <span>你共有()次未读消息</span>
+                                <a class="btn btn-info unread_btn" href="#">全部标记为已读</a>
+                            </div>
+                            <ul class="unread_list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <h2>未登录,跳转到首页</h2>
+            <script type="text/javascript">
+                window.location.href = '/'
+            </script>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extends %}
+
+{% endblock %}

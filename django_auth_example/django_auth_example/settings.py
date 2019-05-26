@@ -24,7 +24,7 @@ SECRET_KEY = 'xjio=jszj#(1!#z2qqqkjb^q0)+%@ativ*&7oq)ed3-h5jfq6$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.woogen.top', '172.23.127.195']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.woogen.top', '119.23.34.122']
 
 # Application definition
 
@@ -126,7 +126,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'Asia/shanghai'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 

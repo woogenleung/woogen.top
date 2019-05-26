@@ -1,0 +1,168 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% load blog_tags %}
+{% block title %}知识 | Woogen的个人博客{% endblock %}
+{% block header_extends %}
+<link href="https://cdn.bootcss.com/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+<style>
+        .post-category a {
+            color: #FF2E63;
+        }
+
+        .top a {
+            display: inline;
+            position: relative;
+        }
+
+        .top-weixin div {
+            left: -999em;
+            position: absolute;
+            overflow: visible;
+            padding-top: 5px;
+            width: 250px;
+            height: 250px;
+            z-index: 999;
+
+        }
+
+        .top-weixin img {
+            margin-left: 0px;
+            width: 245px;
+            height: 225px;
+        }
+
+        .top-weixin:hover div {
+            left: auto;
+        }
+
+        .row a{
+            font-size: 17px;
+        }
+
+    </style>
+{% block nav_knowledge_active %}active{% endblock %}
+{% endblock %}
+{% block main %}
+<div class="container" style="background-color: #ffffff">
+    <div class="row">
+        <div class="col-md-8 col-xs-12 col-sm-12">
+            <h4 class="mt-4 ml-2" style="color: royalblue;"><i class="far fa-smile-wink"
+                                                               style="font-size: xx-large"></i> 博主觉得很酷的东西在这里!!</h4>
+            <div class="mt-4">
+                <div class="alert alert-info" role="alert">编程</div>
+                <div class="row ml-1">
+                    {% get_ShareProgram as ShareProgram %}
+                    {% for field in ShareProgram %}
+                    <div class="col-md-6 col-sm-6 col-xs-6 mb-2">
+                        <a href="{{ field.href }}" style="color: dimgrey">{{ field.title }}</a>
+                        <i class="{{ field.tag1.tag_text }}" style="color: {{ field.tag1.tag_color }}"></i>
+                        <i class="{{ field.tag2.tag_text }}" style="color: {{ field.tag2.tag_color }}"></i>
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-4 mb-4">
+                <div class="alert alert-warning" role="alert">其他</div>
+                {% get_ShareOthers as ShareOthers %}
+                {% for field in ShareOthers %}
+                <div class="col-md-6 col-sm-6 col-xs-6 mb-2">
+                    <a href="{{ field.href }}" style="color: dimgrey">{{ field.title }}</a>
+                    <i class="{{ field.tag1.tag_text }}" style="color: {{ field.tag1.tag_color }}"></i>
+                    <i class="{{ field.tag2.tag_text }}" style="color: {{ field.tag2.tag_color }}"></i>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-4 col-xs-12 col-sm-12" style="min-width: 28%">
+            <div class="card mb-4">
+                <div class="widget widget-archives" id="fix_right_social" style="margin-top: 0px;border: 0px">
+                    <div class="social">
+                        <a href="https://weibo.com/u/1994749327?is_hot=1" data-toggle="tooltip" data-placement="top"
+                           title="新浪微博">
+                            <i class="fab fa-weibo sinaweibo" aria-hidden="true"></i>
+                        </a>
+
+                        <a href="#" class="top-weixin">
+                            <i class="fab fa-weixin weixins" aria-hidden="true"></i>
+                            <div><img src="/media/img/wechat_code.jpg"></div>
+                        </a>
+
+                        <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=675839127@qq.com"
+                           data-toggle="tooltip" data-placement="top" title="Email">
+                            <i class="far fa-envelope email" aria-hidden="true"></i>
+                        </a>
+
+                        <a href="#" class="top-weixin">
+                            <i class="fab fa-qq qq" aria-hidden="true"></i>
+                            <div><img src="/media/img/qq_code.jpg"></div>
+                        </a>
+                        <a href="https://github.com/woogenleung/blog" data-toggle="tooltip" data-placement="top"
+                           title="Github">
+                            <i class="fab fa-github github" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-text text-muted">
+                    <i class="fas fa-envelope" style="color: yellowgreen;"></i> 推广</h4>
+                <p class="mb-0" style="text-align: center">
+                    <a href="mailto:Woogenleung@icloud.com" class="text-muted">赞助/友链</a>
+                </p>
+            </div>
+        </div>
+            <div class="mb-4 card">
+                <div class="card-body">
+                    <h4 class="card-title text-muted">
+                        <i class="fas fa-bell" style="color: lightblue"></i>
+                        博主动态
+                    </h4>
+                    {% get_announcement as announcement %}
+                    <p class="card-text">{{ announcement }}
+                    <!--{% for field in announcement %}-->
+                        <!--{{ field }}-->
+                        <!--{% endfor %}-->
+                    </p>
+                    <br>
+                    <p class="text-right">{{ announcement.create_time }}</p>
+                </div>
+            </div>
+            <div class="mb-4 card">
+                <div class="card-body">
+                    <h4 class="card-title text-muted"><i class="fas fa-link" style="color: lightpink"></i>友情链接</h4>
+                    <p class="card-text">
+                        <img src="https://frostming.com/static/images/favicon.png" alt="" style="max-width: 12%; border-radius: 50%">
+                        <a href="https://frostming.com/" class="text-muted">Frost's Blog</a>
+                    </p>
+                    <p class="card-text">
+                        <img src="https://www.zmrenwu.com/static/blog/images/logo.png" style="max-width: 12%;border-radius: 50%">
+                        <a href="https://www.zmrenwu.com/" class="text-muted">追梦人物的博客</a>
+                    </p>
+                    <p class="card-text">
+                        <img src="https://www.dusaiphoto.com/static/img/favicon.ico" style="max-width: 12%;border-radius: 50%">
+                        <a href="https://www.dusaiphoto.com" class="text-muted">杜赛的个人网站</a>
+                    </p>
+                    <p class="card-text">
+                        <img src="https://www.dusaiphoto.com/static/img/favicon.ico" style="max-width: 12%;border-radius: 50%">
+                        <a href="https://cuiqingcai.com" class="text-muted">崔庆才的个人博客</a>
+                    </p>
+                    <p class="card-text">
+                        <img src="http://yshblog.com/static/media/favicon.ico" style="max-width: 12%;border-radius: 50%">
+                        <a href="http://yshblog.com/" class="text-muted">杨士航的博客</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+// 提示框初始化
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+{% endblock script %}

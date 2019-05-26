@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+错误|Woogen的个人博客
+{% endblock%}
+
+{% block main %}
+{{ message }}, <a href="{{ redirect_to }}">返回</a>
+{% endblock%}

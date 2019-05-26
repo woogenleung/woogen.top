@@ -1,0 +1,69 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/hullabaloo.js' %}"></script>
+</head>
+<body>
+<form action="." method="POST" id="reply_form">
+    {% csrf_token %}
+    <div class="form-group">
+        <div id="test">
+            {{ messageboard_form.body }}
+        </div>
+    </div>
+</form>
+<!--<button onclick="confirm_submit({{ parent_comment_id }})" class="btn btn-primary">发送</button>-->
+<div class="row text-right">
+    <input id="form-submit" value="发表" class="btn btn-primary" onclick="confirm_submit({{ parent_comment_id }})" style="width: 54px">
+    <p id="form-clear" class="btn btn-default" style="margin-right: 20px">清空</p>
+</div>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+<script src="{% static 'js/csrf.js' %}"></script>
+
+
+<script>
+    // 清空文本框按钮
+    $("#form-clear").click(function () {
+        CKEDITOR.instances['id_text'].setData('');
+    });
+
+    $(function () {
+        $(".django-ckeditor-widget").removeAttr('style');
+    });
+
+    function confirm_submit(comment_id) {
+        //获取ckeditor中的值
+        let content = CKEDITOR.instances['id_body'].getData();
+        $.ajax({
+            url: '/comment/messageboard/' + comment_id,
+            type: 'POST',
+            cache: false,
+            data: {body: content},
+            success: function (data) {
+                if (data['status'] == 'SUCCESS') {
+                    parent.location.reload();
+                }
+            },
+            error: function (xhr) {
+                console.log(xhr);
+                parent.location.reload();
+            },
+        })
+    }
+</script>
+
+</body>
+</html>

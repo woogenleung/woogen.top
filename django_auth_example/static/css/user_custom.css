@@ -1,0 +1,65 @@
+body {
+    background: #f1f1f1;
+    min-width: 0;
+    color: #444;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    line-height: 1.4em;
+    height: 800px;
+}
+
+body {
+    color: #555d66;
+    font-size: 14px;
+}
+
+#login {
+    top: 100px;
+    width: 350px;
+    padding: 24px;
+    margin: 72px auto 68px;
+    background: #fff;
+    position: relative;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+}
+
+#login h1 {
+    text-align: center;
+    margin: 0px 0px 0px 0px;
+    top: -72px;
+    width: 100%;
+    left: 0;
+}
+
+#login h1 a {
+    background-image: url(/media/img/logoko.png);
+    background-image: none, url(/media/img/logoko.svg);
+    -webkit-background-size: 256px;
+    background-size: 256px;
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: #999;
+    height: 100px;
+    margin: 0 auto;
+    padding: 0;
+    width: auto;
+    text-indent: -9999px;
+    outline: none;
+    overflow: hidden;
+    display: block;
+    -webkit-transition: none;
+    transition: none;
+    margin-bottom: 10px;
+}
+
+#form-submit {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+}
+
+#rememberme {
+    font-size: 20px;
+}
+

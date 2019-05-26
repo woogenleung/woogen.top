@@ -1,0 +1,52 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% load blog_tags %}
+{% block title %}{{ title }} | Woogen的个人博客{% endblock %}
+{% block header_extends %}
+<script type="text/javascript" src="{% static 'js/hullabaloo.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div id="panel_form" class="panel panel-default">
+                        <div class="panel-body">
+                            <h3 class="form_title">{{ form_title }}</h3>
+                            <p></p>
+                            <form class="main_form" method="post">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <div class="input-group">
+                                        {% if not field.is_hidden %}
+                                            <label class="input-group-addon" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% endif %}
+                                        {{ field }}
+                                    </div>
+                                <p class="text-danger text-right">{{ field.errors.as_text }}</p>
+                                {% endfor %}
+                                <span id="tip" class="text-danger text-right">{{ form.non_field_errors }}</span>
+                                {% block other_buttons %}{% endblock %}
+                                <div class="form-btn">
+                                    <button class="btn btn-default" onclick="window.location.href='{{ return_back_url }}'" style="float: left">返回</button>
+                                    <input class="btn btn-primary" id="btn_submit" type="submit" value="确认" style="float: right">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <h2>未登录,跳转到首页</h2>
+            <script type="text/javascript">
+                window.location.href = '/'
+            </script>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

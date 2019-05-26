@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="{% static 'img/logo.ico' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>跳转|Woogen_blog</title>
+    <link rel="stylesheet" href="{% static 'css/user_custom.css' %}">
+</head>
+<body>
+<div id="login">
+    <h1><a href="{% url 'blog:index' %}" title="Woogen-blog" tabindex="-1">五更|woogen</a></h1>
+    <h3 id="message" class="text-center">{{ message }} 成功!</h3>
+    <h3 class="text-center">{{ msg }}</h3>
+    <span>还有<span id="sp" style="display:inline">3</span>秒跳转界面...</span>
+</div>
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script>
+    onload = function () {
+        setInterval(go, 1000)
+    };
+    var x = 2;
+    var message = $('#message').text();
+    function go() {
+        if (x >= 0) {
+            document.getElementById("sp").innerText = x;
+        } else {
+            if (message == '退出 成功!') {
+                location.href = "{% url 'blog:index' %}";
+            }
+            else {
+                location.href = "{% url 'user:login' %}";
+            }
+        }
+        x--;
+    }
+</script>
+</body>
+</html>

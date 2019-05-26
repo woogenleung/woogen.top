@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load blog_tags %}
+{% load comment_tags %}
+{% block header_extends %}
+{% endblock %}
+{% block nav_blog_active %}active{% endblock %}
+{% block main %}
+<div class="filter blog-border">
+    <div class="filter-item">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">发布日期<span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:void(0)" name="date" onclick="blog_sort('date', '-1');">发布日期从近到远</a></li>
+                <li><a href="javascript:void(0)" name="date" onclick="blog_sort('date', '1');">发布日期从远到近</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">阅读数<span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:void(0)" name="view" onclick="blog_sort('view', '-1');">阅读数由多到少</a></li>
+                <li><a href="javascript:void(0)" name="view" onclick="blog_sort('view', '1');">阅读数由少到多</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">评论数<span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="javascript:void(0)" name="comment" onclick="blog_sort('comment', '-1');">评论数由多到少</a></li>
+                <li><a href="javascript:void(0)" name="comment" onclick="blog_sort('comment', '1')">评论数由少到多</a></li>
+            </ul>
+        </div>
+        <span style="padding-left: 1em;white-space: normal">排序: <span id="sort_content">{{ sorted_msg }}</span></span>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="tag-list">
+        <form action="{% url 'blog:bloglist' %}" method="GET" id="filter_form" >
+            <!--排序类型-->
+            <input class="hidden" name="sf" id="sort_sf" value="date">
+            <input class="hidden" name="st" id="sort_st" value="-1">
+            {% get_categories as category_list %}
+            <ul style="padding-left: 0px">
+                <input class="hidden" id="check_radio" value="{{ check_radio }}">
+                <li class="tag-recommend">
+
+                    <input id="check_all" type="radio" name="tag" value="all">
+                    <label for="check_all">全部类别 ({% get_post_count %})</label>
+                </li>
+                {% for field in category_list %}
+                <li>
+                    <input id="tag_{{ field.id }}" type="radio" name="tag" value="{{ field.id }}">
+                    <label for="tag_{{ field.id }}">{{ field.name }} ({{ field.num_posts }})</label>
+                </li>
+                {% empty %}
+                暂无分类
+                {% endfor %}
+            </ul>
+        </form>
+    </div>
+
+
+</div>
+<div class="blog-border">
+    {% for post in post_list %}
+    <div class="blog-item">
+        <div class="blog-title">
+            <a href="/post/{{ post.id }}" target="_blank">{{ post.title }}</a>
+        </div>
+        <div class="blog-descript">
+            {{ post.body|safe }}
+        </div>
+        <div class="blog-tags">
+            <ul style="padding-left: 0px">
+                <li><span class="glyphicon glyphicon-time"></span><span>{{ post.create_time }}</span></li>
+                <li>阅读: {{ post.get_read_num }}</li>
+                <li>评论: {% get_comment_count post %}</li>
+                <li><span class="glyphicon glyphicon-tag"></span><span>{{ post.category }}</span></li>
+            </ul>
+        </div>
+    </div>
+    {% empty %}
+    <div class="no-post"><h1>抱歉!</br>暂时还没有发布相关文章</h1></div>
+    {% endfor %}
+</div>
+{% if post_list %}
+<div class="col-md-12 text-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if post_list.has_previous %}
+            <li>
+                <a href="?page={{ post_list.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            {% else %}
+            <li class="disabled">
+                <a><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            {% endif %}
+            {% for page_num in page_range %}
+            {% if page_num == post_list.number %}
+            <li class="active"><span>{{ page_num }}</span></li>
+            {% else %}
+                {% if page_num == '...' %}
+                    <li><span>{{ page_num }}</span></li>
+                {% else %}
+                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                {% endif %}
+            {% endif %}
+            {% endfor %}
+
+            {% if post_list.has_next %}
+            <li>
+                <a href="?page={{ post_list.next_page_number }}" aria-label="Next"><span
+                        aria-hidden="true">&raquo;</span></a>
+            </li>
+            {% else %}
+            <li class="disabled">
+                <a><span aria-hidden="true">&raquo;</span></a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block script_extends %}
+<script>
+    $(document).ready(function(){
+        var check_radio = $("#check_radio").val();
+        if(check_radio){
+            $("#tag_" + check_radio).attr('checked', 'checked');
+        }
+        else {
+            $("#check_all").attr('checked', 'checked');
+        }
+
+    });
+
+    function blog_sort(sf, st) {
+        $('#sort_sf').attr('value', sf);
+        $('#sort_st').attr('value', st);
+        $('#filter_form').submit();
+    }
+
+    $("#filter_form input[name=tag]").change(function () {
+        $('#filter_form').submit();
+    });
+
+
+
+</script>
+{% endblock %}

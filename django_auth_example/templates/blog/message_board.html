@@ -1,0 +1,206 @@
+{% extends 'base2.html' %}
+{% load staticfiles %}
+{% block title %}留言 | Woogen的个人博客{% endblock %}
+{% block header_extends %}
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/hullabaloo.js' %}"></script>
+<style>
+    body, p {
+        word-wrap: break-word;
+    }
+</style>
+{% block nav_messageboard_active %}active{% endblock %}
+{% endblock %}
+{% block main %}
+<div class="container" style="background-color: #ffffff">
+    <div class="container" style="max-width: 1100px; margin-top: 10px">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="font-size:18px">给我留言---想说什么都行的呀!</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{% url 'comment:post_comment' %}" method="post" id="message_form">
+                    {% csrf_token %}
+                    {{ comment_form.body }}
+                    <div class="row text-right">
+                        <span id="comment_error" class="text-danger pull-left" style="padding-left: 10px"></span>
+                        <input id="form-submit" type="submit" value="发表" class="btn btn-primary">
+                        <p id="form-clear" class="btn btn-default" style="margin-right: 20px">清空</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% load mptt_tags %}
+        <h4 class="alert alert-info" role="alert" style="margin-bottom: 0px">共有({{ comments.count }})条评论</h4>
+        <div id="comments_body" style="background-color: #ffffff;padding-bottom: 10px">
+            <div id="comments_list" style="width: 90%;padding-left: 20px">
+                <div style="height: 5px;"></div>
+                {% recursetree comments %}
+                {% with comment=node %}
+                <hr>
+                <div class="row" style="margin-left: 0;margin-right: 0;">
+                    <div class="{% if comment.reply_to %}col-md-11
+                                {% else %}col-md-12{% endif %}" style="padding-bottom: 5px">
+                        <div class="col-md-1 col-sm-1 col-xs-3" style="padding: 0">
+                            <img src="{% static 'img/touxiang.png' %}" style="width:64px;height: 64px;border-radius: 90%">
+                        </div>
+                        <div class="col-md-11 col-sm11 col-xs-9">
+                            <p>
+                                <strong style="color: pink">
+                                    {{ comment.user.get_nickname_or_username  }}
+                                </strong>
+                                {% if comment.reply_to %}
+                                <i class="fa fa-angle-double-right" aria-hidden="true"
+                                   style="color: cornflowerblue"></i>
+                                <strong style="color: pink">{{ comment.reply_to.get_nickname_or_username }}</strong>
+                                {% endif %}
+                            </p>
+                            <p class="mt-3 mb-1"></p>
+                            <!--正文-->
+                            {{ comment.body|safe }}
+                            <!--附加栏-->
+                            <div>
+                                <span style="color: grey">
+                                    {{ comment.comment_time|date:"Y/m/d H:i" }}
+                                </span>
+                                <a onclick="load_modal({{ comment.id }})"
+                                   href="javascript:load_modal({{ comment.id }})"> 回复
+                                </a>
+                            </div>
+                            {% if not comment.is_leaf_node %}
+                            <button class="btn btn-outline-secondary collapsed" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" onclick="show_children({{ comment.id }})">
+                            展开此讨论..
+                            </button>
+                            <div class="collapse" id="showbox_{{ comment.id }}">
+                                <div class="card card-body">
+                                    {% if not comment.is_leaf_node %}
+                                    <div class="children">
+                                    {{ children }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% else %}
+                            {% endif %}
+
+                            <!--modal弹窗-->
+                            <div class="modal fade" id="comment_{{ comment.id }}" tabindex="-1" role="dialog"
+                                 aria-labelledby="CommentModalCenter" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="modal-content" style="height: 380px">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">回复: {{ comment.user.get_nickname_or_username  }}</h5>
+                                        </div>
+                                        <div class="modal-body" id="modal_body_{{ comment.id }}"
+                                             style="height: 330px"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endrecursetree %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extends %}
+<script>
+    //替换字符
+    String.prototype.format = function(){
+        var str = this;
+        for (var i = 0; i < arguments.length; i++){
+            var str = str.replace(new RegExp('\\{' + i + '\\}', 'g'), arguments[i]);
+        }
+    }
+
+    //评论提交(ajax提交)
+    $('#message_form').submit(function () {
+        $("#comment_error").text('');
+        // 评论内容为空时的操作
+        if (CKEDITOR.instances['id_body'].getData().trim() == '') {
+            $("#comment_error").text('评论内容不能为空');
+            $.hulla = new hullabaloo();
+            $.hulla.send('评论内容不能为空', 'warning');
+            //不刷新页面
+            return false;
+        }
+        //更新数据到textarea
+        CKEDITOR.instances['id_body'].updateElement();
+        //异步提交
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'comment:post_comment' %}",
+            data: $(this).serialize(),
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                if (data['status'] == 'SUCCESS') {
+                    var html = '<div class="col-md-12">' +
+                        '<hr><p><strong style="color: pink">' + data['username'] + '</strong></p>' +
+                        '<div>' + data['text'] + '</div>' +
+                        '<div><span style="color: grey">' + data['comment_time'] + '</span>' +
+                        '&nbsp;<button type="button" class="btn btn-primary btn-xs text-muted" onclick="load_modal(' + data['id'] + ')">回复</button></div>' +
+                        '<div class="modal fade" id="comment_' + data['id'] + '" tabindex="-1" role="dialog" aria-labelledby="CommentModalCenter" aria-hidden="true">' +
+                        '<div class="modal-dialog modal-dialog-centered modal-lg" role="document">' +
+                        '<div class="modal-content" style="height: 380px">' +
+                        '<div class="modal-header"><h5 class="modal-title" id="﻿exampleModalCenterTitle">回复' + data['reply_to'] + '</h5></div>' +
+                        '<div class="modal-body" id="modal_body_' + data['id'] + '" style="height: 330px"></div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+
+                    $('#comments_list').prepend(html);
+                    $.hulla = new hullabaloo();
+                    $.hulla.send('评论成功', 'success');
+                    console.log(data);
+                }
+                else if (data['status'] == 'ERROR') {
+                    $.hulla = new hullabaloo();
+                    $.hulla.send(data['message'], 'danger');
+                    $("#comment_error").text(data['message']);
+                    console.log(data);
+                }
+                CKEDITOR.instances['id_body'].setData('');
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            },
+
+        });
+        return false;
+
+
+    })
+
+    function load_modal(comment_id) {
+        //let定义的变量只能在函数内部有用,对函数外部无影响
+        let modal_body = '#modal_body_' + comment_id;
+        let modal_id = '#comment_' + comment_id;
+        //==和===的区别,===表示恒定,数据类型和数值都要相等,还有某些额外的情况
+        if ($(modal_body).children().length == 0) {
+            let content = '<iframe src="/comment/messageboard/' +
+                comment_id +
+                '" frameborder="0" style="width: 100%; height: 100%;"></iframe>';
+            $(modal_body).append(content);
+        }
+        ;
+        $(modal_id).modal('show');
+    }
+
+    // 清空文本框按钮
+    $("#form-clear").click(function () {
+        CKEDITOR.instances['id_text'].setData('');
+    })
+
+    function show_children(button_id){
+        var showbox = $("#showbox_" + button_id);
+        showbox.slideToggle('normal');
+    }
+</script>
+{% endblock %}
